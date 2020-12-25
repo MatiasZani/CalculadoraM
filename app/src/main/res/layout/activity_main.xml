@@ -8,7 +8,9 @@
     android:background="@color/background"
     tools:context=".ui.activities.main.MainActivity" >
 
-    <androidx.cardview.widget.CardView
+    <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
+        android:backgroundTint="@color/card_view_color"
         app:cardCornerRadius="@dimen/corners_radius"
         android:layout_margin="@dimen/margin"
         android:layout_width="match_parent"
@@ -26,10 +28,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:textAlignment="textEnd"
-                android:textSize="@dimen/textSecondary" />
+                android:textColor="@color/text_color_secondary"
+                android:textSize="@dimen/textSecondary"  />
 
             <TextView
                 android:id="@+id/screen"
@@ -42,7 +45,7 @@
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/textScreen" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </io.armcha.elasticview.ElasticView>
 
     <LinearLayout
         android:id="@+id/keyboard"
@@ -57,8 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_parenthesis_start"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -67,6 +70,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_parenthesis_start"
                     android:text="@string/parenthesis_start"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -75,10 +79,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_parenthesis_end"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -87,6 +91,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_parenthesis_end"
                     android:text="@string/parenthesis_end"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -95,10 +100,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_percent"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -107,6 +112,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_percent"
                     android:text="@string/percent"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -115,10 +121,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_funtion"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -127,6 +133,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_funtion"
                     android:text="@string/ac"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -135,7 +142,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
 
         </LinearLayout>
@@ -146,8 +153,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_seven"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -156,6 +163,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_seven"
                     android:text="@string/seven"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -164,10 +172,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_eight"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -176,6 +184,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_eight"
                     android:text="@string/eight"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -184,10 +193,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_nine"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -196,6 +205,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_nine"
                     android:text="@string/nine"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -204,10 +214,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_div"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -216,6 +226,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_div"
                     android:text="@string/div"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -224,7 +235,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
 
         </LinearLayout>
@@ -234,8 +245,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_four"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -244,6 +255,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_four"
                     android:text="@string/four"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -252,10 +264,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_five"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -264,6 +276,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_five"
                     android:text="@string/five"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -272,10 +285,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_six"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -284,6 +297,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_six"
                     android:text="@string/six"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -292,10 +306,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_times"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -304,6 +318,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_times"
                     android:text="@string/times"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -312,7 +327,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
 
         </LinearLayout>
@@ -322,8 +337,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_one"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -332,6 +347,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_one"
                     android:text="@string/one"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -340,10 +356,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_two"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -352,6 +368,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_two"
                     android:text="@string/two"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -360,10 +377,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_trhee"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -372,6 +389,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_trhee"
                     android:text="@string/three"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -380,10 +398,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_minus"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -392,6 +410,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_minus"
                     android:text="@string/minus"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -400,7 +419,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
 
         </LinearLayout>
@@ -410,8 +429,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_zero"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -420,6 +439,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_zero"
                     android:text="@string/zero"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -428,10 +448,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_dot"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -440,6 +460,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_dot"
                     android:text="@string/dot"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -448,10 +469,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_equals"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_especial"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -460,6 +481,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_equals"
                     android:text="@string/equals"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -468,10 +490,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/button_plus"
+            <io.armcha.elasticview.ElasticView
+        app:flexibility="5"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -480,6 +502,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/button_plus"
                     android:text="@string/plus"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
@@ -488,7 +511,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </androidx.cardview.widget.CardView>
+            </io.armcha.elasticview.ElasticView>
 
 
         </LinearLayout>

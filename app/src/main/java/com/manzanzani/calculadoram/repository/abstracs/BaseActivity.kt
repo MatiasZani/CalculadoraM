@@ -1,17 +1,20 @@
 package com.manzanzani.calculadoram.repository.abstracs
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelStoreOwner
 
 abstract class BaseActivity<T, V>(
     private val viewModelProvider: (ViewModelStoreOwner) -> V,
     private val bindingFragment: (Context) -> T,
     private val bindingFragmentRoot: (T) -> View,
-    private val configView: (T, V) -> Unit
+    private val configView: (T, V, LifecycleOwner) -> Unit
 
 ) : AppCompatActivity() {
 
@@ -22,12 +25,8 @@ abstract class BaseActivity<T, V>(
         super.onCreate(savedInstanceState)
         binding = bindingFragment(this)
         viewModel = viewModelProvider(this)
+        configView(binding!!, viewModel!!, this)
         setContentView(bindingFragmentRoot(binding!!))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        configView(binding!!, viewModel!!)
     }
 
 }
