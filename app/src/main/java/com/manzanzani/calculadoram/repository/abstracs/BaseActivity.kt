@@ -8,25 +8,26 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelStoreOwner
 
 abstract class BaseActivity<T, V>(
-
-    viewModelProvider: (ViewModelStoreOwner) -> V,
-    bindingFragment: (Context) -> T,
+    private val viewModelProvider: (ViewModelStoreOwner) -> V,
+    private val bindingFragment: (Context) -> T,
     private val bindingFragmentRoot: (T) -> View,
     private val configView: (T, V) -> Unit
 
 ) : AppCompatActivity() {
 
-    private val binding = bindingFragment(this)
-    private val viewModel = viewModelProvider(this)
+    private var binding: T? = null
+    private var viewModel: V? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(bindingFragmentRoot(binding))
+        binding = bindingFragment(this)
+        viewModel = viewModelProvider(this)
+        setContentView(bindingFragmentRoot(binding!!))
     }
 
     override fun onResume() {
         super.onResume()
-        configView(binding, viewModel)
+        configView(binding!!, viewModel!!)
     }
 
 }

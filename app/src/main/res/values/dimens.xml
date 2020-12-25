@@ -3,8 +3,12 @@
 
     <dimen name="margin">10dp</dimen>
     <dimen name="padding">10dp</dimen>
+    <dimen name="button_padding">5dp</dimen>
 
-    <dimen name="textScreen">32sp</dimen>
+    <dimen name="corners_radius">20dp</dimen>
+
+    <dimen name="textScreen">64sp</dimen>
     <dimen name="textSecondary">14sp</dimen>
+    <dimen name="textIco">24sp</dimen>
 
 </resources>
