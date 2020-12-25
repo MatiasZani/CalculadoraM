@@ -4,4 +4,7 @@
     <dimen name="margin">10dp</dimen>
     <dimen name="padding">10dp</dimen>
 
+    <dimen name="textScreen">32sp</dimen>
+    <dimen name="textSecondary">14sp</dimen>
+
 </resources>
