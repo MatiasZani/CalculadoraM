@@ -22,6 +22,8 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
     private val _result = MutableLiveData<Float>()
     val result: LiveData<Float> get() = _result
 
+    private var parenthesisCounter = 0
+
     val addAny = { value: Int, type: Int ->
         with(b){
             if (c.operation.toStringE(context).toCharArray().size < maxScreen) listOf(addNumber, addOperator, addEspecial)[type](value)
@@ -32,9 +34,8 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     val restart = { btnRestart: View ->
         with(b){
-            if (c.operation.size == 0) c.operation.add(context.getString(R.string.empty))
-            if (c.operation[0].toCharArray().isNotEmpty()){
 
+            val restart = {
                 btnRestart.visibility = View.VISIBLE
                 btnRestart.setOnClickListener {
                     c.operation = arrayListOf(context.getString(R.string.empty))
@@ -42,7 +43,13 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
                     _story.value = context.getString(R.string.empty)
                 }
             }
-            else btnRestart.visibility = View.GONE
+
+            if (screen.value.toString().isEmpty()){
+                if (c.operation.size == 0 && _story.value.toString().isNotEmpty()) c.operation.add(context.getString(R.string.empty))
+                if (c.operation[0].toCharArray().isNotEmpty()) restart()
+                else btnRestart.visibility = View.GONE
+            }
+            else restart()
         }
     }
 
@@ -53,11 +60,21 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     val removeCharacter = {
         with(c){
+
+            val checkParenthesisIndexs = { string: String ->
+                if (string == b.context.getString(R.string.parenthesis_start)) parenthesisCounter--
+                if (string == b.context.getString(R.string.parenthesis_end)) parenthesisCounter++
+            }
+
             val removeLastCharacter = {
+                checkParenthesisIndexs(operation.lastValue)
                 operation[operation.lastIndex] = operation.lastValue.substring(0, operation.lastValue.length - 1)
             }
 
-            val removeLastString = { operation.removeAt(operation.lastIndex) }
+            val removeLastString = {
+                checkParenthesisIndexs(operation.lastValue)
+                operation.removeAt(operation.lastIndex)
+            }
 
             if (operation.isNotEmpty()){
                 if (operation.lastValue.isEmpty() && operation.size != 1){
@@ -120,15 +137,23 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
                 0 -> {
                     if (operation.lastValue == b.context.getString(R.string.empty)) operation.removeLast()
                     addCharacter(b.context.getString(R.string.parenthesis_start), true)
+                    parenthesisCounter++
                 }
 
                 1 ->{
-                    val add = { addCharacter(b.context.getString(R.string.parenthesis_end), true) }
-                    if(operation.lastIndex > 0){
-                        if (operation.lastValue.isNotEmpty()) add()
-                        else if (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)){
-                            operation[operation.lastIndex] = b.context.getString(R.string.parenthesis_end)
-                            operation.add(b.context.getString(R.string.empty))
+                    Log.i("P", parenthesisCounter.toString())
+                    if (parenthesisCounter >= 1){
+                        val add = {
+                            addCharacter(b.context.getString(R.string.parenthesis_end), true)
+                            parenthesisCounter--
+                        }
+                        if(operation.lastIndex > 0){
+                            if (operation.lastValue.isNotEmpty()) add()
+                            else if (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)){
+                                parenthesisCounter--
+                                operation[operation.lastIndex] = b.context.getString(R.string.parenthesis_end)
+                                operation.add(b.context.getString(R.string.empty))
+                            }
                         }
                     }
                 }

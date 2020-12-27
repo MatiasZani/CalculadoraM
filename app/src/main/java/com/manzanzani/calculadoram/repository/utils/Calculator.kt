@@ -27,6 +27,10 @@ class Calculator(private val b: BasicDataToExist){
                             index = i
                             break
                         }
+                        else if (i == operationList.lastIndex){
+                            repeat(startP - endP){ operationList.add(getString(R.string.parenthesis_end)) }
+                            index = operationList.lastIndex
+                        }
                     }
 
                     else ->
