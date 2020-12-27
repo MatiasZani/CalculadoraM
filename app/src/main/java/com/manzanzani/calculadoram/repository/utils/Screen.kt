@@ -96,11 +96,6 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     private val addOperator = { value: Int ->
         with(b){
-
-            Log.i("VALUE", c.operation[c.operation.lastIndex - 1])
-            Log.i("FLAG", (c.operation.lastValue.isEmpty()).toString())
-            Log.i("FLAG1", (c.operation[c.operation.lastIndex - 1] != context.getString(R.string.parenthesis_start)).toString())
-
             if (c.operation.lastValue !in context.resources.getStringArray(R.array.operatos) &&
                     when {
                         c.operation.lastIndex > 2 -> {

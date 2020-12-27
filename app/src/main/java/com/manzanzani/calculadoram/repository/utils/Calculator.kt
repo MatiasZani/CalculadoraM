@@ -14,7 +14,7 @@ class Calculator(private val b: BasicDataToExist){
         with(b.context){
             var index = 0
 
-            var startP = -1
+            var startP = 0
             var endP = 0
 
             for (i in startIndex..operationList.lastIndex){
@@ -22,22 +22,21 @@ class Calculator(private val b: BasicDataToExist){
                     getString(R.string.parenthesis_start) -> startP++
 
                     getString(R.string.parenthesis_end) ->{
-                        if (i != operationList.lastIndex){
-                            if (startP == endP){
-                                index = i
-                                break
-                            }
-                            endP++
-                        }
-                        else{
-                            repeat(startP - endP){ operationList.add(getString(R.string.parenthesis_end)) }
-                            index = operationList.lastIndex
+                        endP++
+                        if (startP == endP){
+                            index = i
+                            break
                         }
                     }
 
+                    else ->
+                        if (i == operationList.lastIndex){
+                            repeat(startP - endP){ operationList.add(getString(R.string.parenthesis_end)) }
+                            index = operationList.lastIndex
+                            break
+                        }
                 }
             }
-
 
             index
         }
