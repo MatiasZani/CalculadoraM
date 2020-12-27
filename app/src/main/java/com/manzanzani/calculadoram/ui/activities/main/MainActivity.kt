@@ -72,16 +72,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                             listOf(
                                 buttonParenthesisStart,
                                 buttonParenthesisEnd,
-                                buttonDot,
-                                buttonFuntion,
-                                    cardViewEquals
+                                buttonDot
                             ),
                             listOf(
                                 cardViewParenthesisStart,
                                 cardViewParenthesisEnd,
-                                cardViewDot,
-                                cardViewFuntion,
-                                buttonEquals
+                                cardViewDot
                             )
                         )
 
@@ -93,6 +89,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                                 }
                     }
                 }
+
+                val constantButtons = ButtonAndCardView(
+                        listOf(
+                                buttonEquals,
+                                buttonFuntion
+                        ),
+                        listOf(
+                                cardViewEquals,
+                                cardViewFuntion
+                        )
+                )
+
+                for (i in 0..1)
+                    for (x in listOf(constantButtons.buttons, constantButtons.cardView))
+                        x[i].setOnClickListener {
+                            listOf(v.screen.calculate, v.screen.removeCharacter)[i]()
+                        }
 
                 v.screen.screen.observe(lfo){
                     txtScreen.text = it

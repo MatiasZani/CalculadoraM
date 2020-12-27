@@ -1,22 +1,17 @@
 package com.manzanzani.calculadoram.repository.utils
 
-import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.manzanzani.calculadoram.R
 import com.manzanzani.calculadoram.repository.classes.BasicDataToExist
-import com.manzanzani.calculadoram.repository.classes.ParenthesisIndex
-import javax.security.auth.login.LoginException
 
-class Calculator(private val basicData: BasicDataToExist){
+class Calculator(private val b: BasicDataToExist){
 
-    var operation = ArrayList<String>().apply { add(basicData.context.getString(R.string.empty)) }
+    var operation = ArrayList<String>().apply { add(b.context.getString(R.string.empty)) }
 
     val calculate = { getResult(operation).toFloat() }
 
     private val findEndOfParenthesis = { operationList: ArrayList<String>, startIndex: Int ->
-        with(basicData.context){
+        with(b.context){
 
             var index = 0
 
@@ -42,13 +37,14 @@ class Calculator(private val basicData: BasicDataToExist){
     }
 
     private val calculateParenthesis = { operationList: ArrayList<String>, startIndex: Int ->
-        with(basicData){
+        with(b){
             val finalIndex = findEndOfParenthesis(operationList, startIndex)
 
             var counter = 0
+            Log.i("OP_P_IN", operationList.toString())
 
-            if (finalIndex < operationList.size)
-                if (operationList[finalIndex + 1] !in operators)
+            if (finalIndex < operationList.lastIndex)
+                if (operationList[finalIndex + 1] !in operators && finalIndex + 1 != operationList.size)
                     operationList.add(finalIndex + 1 , operators[2])
 
             if (startIndex > 0)
@@ -63,6 +59,7 @@ class Calculator(private val basicData: BasicDataToExist){
                                 for (i in 2..finalIndex + counter) add(operationList[i])
                                 remove(context.getString(R.string.parenthesis_start))
                                 remove(context.getString(R.string.parenthesis_end))
+                                Log.i("OP_P_OUT", operationList.toString())
                             }
                     )
             )
@@ -72,14 +69,15 @@ class Calculator(private val basicData: BasicDataToExist){
     }
 
     private fun getResult(operationList: ArrayList<String>): String {
-        with(basicData){
+        with(b){
+
+            operationList.removeAll { it == (context.getString(R.string.empty)) }
+
             val operate = {
                 operationList[0] = operatorsFunctions[operators.indexOf(operationList[1])](operationList[0].toFloat(), operationList[2].toFloat()).toString()
                 repeat(2){ operationList.removeAt(1) }
             }
-
-            Log.i("OPERATIONLIST", operationList.toString())
-
+            
             while (operationList.size != 1){
                 if (operationList[0] == context.getString(R.string.parenthesis_start)) calculateParenthesis(operationList, 0)
                 else{

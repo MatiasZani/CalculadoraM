@@ -7,10 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.manzanzani.calculadoram.R
 import com.manzanzani.calculadoram.repository.classes.BasicDataToExist
+import com.manzanzani.calculadoram.ui.others.lastIndex
 import com.manzanzani.calculadoram.ui.others.lastValue
 import com.manzanzani.calculadoram.ui.others.toStringE
 
-class Screen(private val c: Calculator, private val basicData: BasicDataToExist) {
+class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     private val _screen = MutableLiveData<String>()
     val screen: LiveData<String> get() = _screen
@@ -22,16 +23,18 @@ class Screen(private val c: Calculator, private val basicData: BasicDataToExist)
     val result: LiveData<Float> get() = _result
 
     val addAny = { value: Int, type: Int ->
-        with(basicData){
+        with(b){
             if (c.operation.toStringE(context).toCharArray().size < maxScreen) listOf(addNumber, addOperator, addEspecial)[type](value)
             else Toast.makeText(context, context.getString(R.string.max_lenght) + maxScreen.toString() + context.getString(R.string.digits), Toast.LENGTH_SHORT).show()
+            Log.i("OP_EDITED", c.operation.toString())
         }
     }
 
     val restart = { btnRestart: View ->
-        with(basicData){
-            if (c.operation.isEmpty()) btnRestart.visibility = View.GONE
-            else{
+        with(b){
+            if (c.operation.size == 0) c.operation.add(context.getString(R.string.empty))
+            if (c.operation[0].toCharArray().isNotEmpty()){
+
                 btnRestart.visibility = View.VISIBLE
                 btnRestart.setOnClickListener {
                     c.operation = arrayListOf(context.getString(R.string.empty))
@@ -39,12 +42,40 @@ class Screen(private val c: Calculator, private val basicData: BasicDataToExist)
                     _story.value = context.getString(R.string.empty)
                 }
             }
+            else btnRestart.visibility = View.GONE
+        }
+    }
+
+    val calculate = {
+        _result.value = c.calculate()
+        show(true)
+    }
+
+    val removeCharacter = {
+        with(c){
+            val removeLastCharacter = {
+                operation[operation.lastIndex] = operation.lastValue.substring(0, operation.lastValue.length - 1)
+            }
+
+            val removeLastString = { operation.removeAt(operation.lastIndex) }
+
+            if (operation.isNotEmpty()){
+                if (operation.lastValue.isEmpty() && operation.size != 1){
+                    removeLastString()
+                    if (operation.lastValue.length > 1) removeLastCharacter()
+                    else removeLastString()
+                }
+                else if (operation.lastValue.isNotEmpty()) removeLastCharacter()
+                else Unit
+            }
+            else operation = arrayListOf(b.context.getString(R.string.empty))
+            show(false)
         }
     }
 
     private val show = { flag: Boolean ->
         with(c){
-            val value = operation.toStringE(basicData.context)
+            val value = operation.toStringE(b.context)
             if (flag) _screen.value = value
             else _story.value = value
         }
@@ -55,7 +86,7 @@ class Screen(private val c: Calculator, private val basicData: BasicDataToExist)
             if (!flag) operation[operation.lastIndex] = operation.lastValue + value
             else{
                 operation.add(value)
-                operation.add(basicData.context.getString(R.string.empty))
+                operation.add(b.context.getString(R.string.empty))
             }
             show(false)
         }
@@ -64,47 +95,39 @@ class Screen(private val c: Calculator, private val basicData: BasicDataToExist)
     private val addNumber = { value: Int -> addCharacter(value.toString(), false) }
 
     private val addOperator = { value: Int ->
-        with(basicData){
-            if (c.operation.lastValue !in context.resources.getStringArray(R.array.operatos) && c.operation.lastValue.isNotEmpty())
+        with(b){
+            if (c.operation.lastValue !in context.resources.getStringArray(R.array.operatos) && if (c.operation.lastIndex > 2) c.operation[c.operation.lastIndex - 1] !in context.resources.getStringArray(R.array.operatos) else c.operation.lastValue.isNotEmpty())
                 if (value in operators.indices) addCharacter(operators[value], true)
         }
     }
 
     private val addEspecial = { value: Int ->
         with(c){
-
             when(value){
 
-                0 -> addCharacter(basicData.context.getString(R.string.parenthesis_start), true)
-
-                1 -> if (operation.lastValue.isNotEmpty()) addCharacter(basicData.context.getString(R.string.parenthesis_end), true)
-
-                2 -> addCharacter(basicData.context.getString(R.string.dot), false)
-
-                3 -> {
-
-                    val removeLastCharacter = {
-                        operation[operation.lastIndex] = operation.lastValue.substring(0, operation.lastValue.length - 1)
-                    }
-
-                    val removeLastString = { operation.removeAt(operation.lastIndex) }
-
-                    if (operation.isNotEmpty()){
-                        if (operation.lastValue.isEmpty() && operation.size != 1){
-                            removeLastString()
-                            if (operation.lastValue.length > 1) removeLastCharacter()
-                            else removeLastString()
-                        }
-                        else if (operation.lastValue.isNotEmpty()) removeLastCharacter()
-                    }
-                    else operation = arrayListOf(basicData.context.getString(R.string.empty))
+                0 -> {
+                    if (operation.lastValue == b.context.getString(R.string.empty)) operation.removeLast()
+                    addCharacter(b.context.getString(R.string.parenthesis_start), true)
                 }
 
-                else ->{
+                1 ->{
+                    val add = { addCharacter(b.context.getString(R.string.parenthesis_end), true) }
 
-                    _result.value = c.calculate()
-                    show(true)
+                    Log.i("LAST INDEX", (operation.lastIndex > 1).toString())
+                    Log.i("IS NOT EMPTY", (operation.lastValue.isNotEmpty()).toString())
+                    Log.i("OTHER", (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)).toString())
+                    Log.i("LAST INDEX", (operation.lastIndex).toString())
+
+
+
+                    if(operation.lastIndex > 0){
+                        if (operation.lastValue.isNotEmpty()) add()
+                        else if (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)) add()
+                    }
                 }
+
+                else -> addCharacter(b.context.getString(R.string.dot), false)
+
             }
             show(false)
         }

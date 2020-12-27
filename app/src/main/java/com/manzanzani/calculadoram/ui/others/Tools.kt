@@ -4,6 +4,9 @@ import android.content.Context
 import android.widget.Toast
 import com.manzanzani.calculadoram.R
 
+val ArrayList<String>.firstValue: String
+    get() = this[0]
+
 val ArrayList<String>.lastValue: String
     get() = this[this.size - 1]
 

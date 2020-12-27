@@ -16,7 +16,7 @@ import com.manzanzani.calculadoram.ui.others.toStringE
 
 class MainViewModel: ViewModel() {
 
-    private val MAX_OPERATION_SIZE = 25
+    private val MAX_OPERATION_SIZE = 50
 
     private lateinit var operators: List<String>
 
