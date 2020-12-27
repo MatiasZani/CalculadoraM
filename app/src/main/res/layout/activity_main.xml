@@ -5,20 +5,18 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@color/background"
+    android:background="@drawable/background_degree"
     tools:context=".ui.activities.main.MainActivity" >
 
-    
     <io.armcha.elasticview.ElasticView
         app:flexibility="5"
-        android:backgroundTint="@color/card_view_color"
+        android:backgroundTint="@color/card_view_standar"
         app:cardCornerRadius="@dimen/corners_radius"
         android:layout_margin="@dimen/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -508,7 +506,7 @@
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_zero"
                 app:flexibility="5"
-                android:backgroundTint="@color/card_view_standar"
+                android:backgroundTint="#E64A19"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
                 android:layout_weight="1"

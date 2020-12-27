@@ -112,17 +112,12 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
                 1 ->{
                     val add = { addCharacter(b.context.getString(R.string.parenthesis_end), true) }
-
-                    Log.i("LAST INDEX", (operation.lastIndex > 1).toString())
-                    Log.i("IS NOT EMPTY", (operation.lastValue.isNotEmpty()).toString())
-                    Log.i("OTHER", (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)).toString())
-                    Log.i("LAST INDEX", (operation.lastIndex).toString())
-
-
-
                     if(operation.lastIndex > 0){
                         if (operation.lastValue.isNotEmpty()) add()
-                        else if (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)) add()
+                        else if (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)){
+                            operation[operation.lastIndex] = b.context.getString(R.string.parenthesis_end)
+                            operation.add(b.context.getString(R.string.empty))
+                        }
                     }
                 }
 
