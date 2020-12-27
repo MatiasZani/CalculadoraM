@@ -85,16 +85,17 @@ class Calculator(private val b: BasicDataToExist){
     private fun getResult(operationList: ArrayList<String>): String {
         with(b){
 
-            Log.i("GET_RESULT", operationList.toString())
 
             operationList.removeAll { it == (context.getString(R.string.empty)) }
 
             val operate = {
                 operationList[0] = operatorsFunctions[operators.indexOf(operationList[1])](operationList[0].toFloat(), operationList[2].toFloat()).toString()
                 repeat(2){ operationList.removeAt(1) }
+                Log.i("OPERATE", operationList.toString())
             }
 
             while (operationList.size != 1){
+                Log.i("WHILE_LOOP", operationList.toString())
                 if (operationList[0] == context.getString(R.string.parenthesis_start)) calculateParenthesis(operationList, 0)
                 else{
                     when(operationList[1]){
@@ -103,7 +104,7 @@ class Calculator(private val b: BasicDataToExist){
                             if (operationList.size >= 2){
                                 if (operationList[2] == b.context.getString(R.string.parenthesis_start)){
                                     calculateParenthesis(operationList, 2)
-                                    calculate()
+                                    operate()
                                 }
                                 else operate()
                             }
