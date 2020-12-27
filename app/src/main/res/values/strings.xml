@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">CalculadoraM</string>
 
+    <!-- UTILS -->
+    <string name="max_lenght">No es posible introducir más de </string>
+    <string name="digits"> digitos </string>
+
+    <!-- UTILS -->
+    <string name="empty"></string>
+    <string name="coma">,</string>
+    <string name="espace"> </string>
+
     <!-- VIEW -->
     <string name="plus">+</string>
     <string name="equals">=</string>

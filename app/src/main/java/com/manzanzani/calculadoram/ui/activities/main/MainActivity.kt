@@ -19,6 +19,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
 
             with(b) {
 
+                v.init(b.root.context)
+
                 v.viewModelScope.launch {
 
                     for ((lambdaIndex, groupdOfView) in listOf(
@@ -54,30 +56,32 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                                 buttonMinus,
                                 buttonTimes,
                                 buttonDiv,
-                                buttonEquals
+                                buttonPercent
                             ),
                             listOf(
                                 cardViewPlus,
                                 cardViewMinus,
                                 cardViewTimes,
                                 cardViewDiv,
-                                cardViewEquals
+                                cardViewPercent
+
+
                             )
                         ),
                         ButtonAndCardView( // Especial
                             listOf(
                                 buttonParenthesisStart,
                                 buttonParenthesisEnd,
-                                buttonPercent,
                                 buttonDot,
-                                buttonFuntion
+                                buttonFuntion,
+                                    cardViewEquals
                             ),
                             listOf(
                                 cardViewParenthesisStart,
                                 cardViewParenthesisEnd,
-                                cardViewPercent,
                                 cardViewDot,
-                                cardViewFuntion
+                                cardViewFuntion,
+                                buttonEquals
                             )
                         )
 
@@ -85,14 +89,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                         for (group in listOf(groupdOfView.buttons, groupdOfView.cardView))
                             for ((viewIndex, view) in group.withIndex())
                                 view.setOnClickListener {
-                                    v.screen.addAny(viewIndex, lambdaIndex, b.root.context)
+                                    v.screen.addAny(viewIndex, lambdaIndex)
                                 }
                     }
                 }
 
-                v.screen.screen.observe(lfo){ txtScreen.text = it }
+                v.screen.screen.observe(lfo){
+                    txtScreen.text = it
+                    v.screen.restart(b.buttonRestart)
+                }
 
-                v.screen.story.observe(lfo){ txtStory.text = it }
+                v.screen.story.observe(lfo){
+                    txtStory.text = it
+                    v.screen.restart(b.buttonRestart)
+                }
 
                 v.screen.result.observe(lfo){
 
