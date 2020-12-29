@@ -8,123 +8,83 @@ class Calculator(private val b: BasicDataToExist){
 
     var operation = ArrayList<String>().apply { add(b.context.getString(R.string.empty)) }
 
-    val calculate = { getResult(operation).toFloat() }
-
-    private val findEndOfParenthesis = { operationList: ArrayList<String>, startIndex: Int ->
-        with(b.context){
-            var index = 0
-
-            var startP = 0
-            var endP = 0
-
-            for (i in startIndex..operationList.lastIndex){
-                when(operationList[i]){
-                    getString(R.string.parenthesis_start) -> startP++
-
-                    getString(R.string.parenthesis_end) ->{
-                        endP++
-                        if (startP == endP){
-                            index = i
-                            break
-                        }
-                        else if (i == operationList.lastIndex){
-                            repeat(startP - endP){ operationList.add(getString(R.string.parenthesis_end)) }
-                            index = operationList.lastIndex
-                        }
-                    }
-
-                    else ->
-                        if (i == operationList.lastIndex){
-                            repeat(startP - endP){ operationList.add(getString(R.string.parenthesis_end)) }
-                            index = operationList.lastIndex
-                            break
-                        }
-                }
-            }
-
-            index
+    val calculate = { parenthesisNotEnded: Int ->
+        repeat(parenthesisNotEnded){ operation.add(b.context.getString(R.string.parenthesis_end)) }
+        removeNotNecesaryParenthesis()
+        while (operation.size != 1){
+            removeTimesAndDiv(operation, listOf(b.operators[2], b.operators[3], b.operators[4]))
+            removeTimesAndDiv(operation, listOf(b.operators[0], b.operators[1]))
         }
+        operation[0].toFloat()
     }
 
-    private val calculateParenthesis = { operationList: ArrayList<String>, startIndex: Int ->
+    private val operateScientific = { operationList: ArrayList<String>, firstIndex: Int ->
         with(b){
-            val finalIndex = findEndOfParenthesis(operationList, startIndex)
-
-            val notPosibleCharacters = ArrayList<String>().apply {
-                addAll(operators)
-                add(context.getString(R.string.parenthesis_start))
-            }
-
-            var counter = 0
-
-            if (finalIndex < operationList.lastIndex)
-                if (operationList[finalIndex + 1] !in notPosibleCharacters && finalIndex + 1 != operationList.size)
-                    operationList.add(finalIndex + 1 , operators[2])
-
-            if (startIndex > 0)
-                if (operationList[startIndex - 1] !in notPosibleCharacters){
-                    operationList.add(startIndex , operators[2])
-                    counter++
-                }
-
-            operationList.add(startIndex,
-                    getResult(
-                            ArrayList<String>().apply {
-                                for (i in startIndex..finalIndex + counter) add(operationList[i])
-                                Log.i("OUT_P_1", this.toString())
-                                removeAt(0)
-                                removeAt(lastIndex)
-                                Log.i("OUT_P", this.toString())
-                            }
-                    )
-            )
-
-            Log.i("OPERATION_NOT_MOFIDIF", operationList.toString())
-            repeat(finalIndex + 1 - startIndex){ operationList.removeAt(startIndex + counter + 1) }
-            Log.i("OPERATION_MOFIDIF", operationList.toString())
+            operatorsFunctions[operators.indexOf(operationList[firstIndex + 1])](operationList[firstIndex].toFloat(), operationList[firstIndex + 2].toFloat()).toString()
         }
     }
 
-    private fun getResult(operationList: ArrayList<String>): String {
+    private val removeNotNecesaryParenthesis = {
+
+        var parenthesis = 0
+
+        val checkP = { value: String, index: Int -> value == b.context.getString(R.string.parenthesis_start) && operation[index + 2] == b.context.getString(R.string.parenthesis_end) }
+
+        for ((j, i) in operation.withIndex()) if (checkP(i, j)) parenthesis++
+
+        while (parenthesis != 0){
+            var pIndex = 0
+            parenthesis--
+            for ((j, i) in operation.withIndex()) if (checkP(i, j)){
+                pIndex = j
+                break
+            }
+
+            val value = operation[pIndex + 1]
+
+            repeat(3){ operation.removeAt(pIndex) }
+
+            operation.add(pIndex, value)
+        }
+    }
+
+    private fun removeTimesAndDiv(operationList: ArrayList<String>, operatorsList: List<String>){
         with(b){
 
+            operationList.removeAll { it == context.getString(R.string.empty) }
 
-            operationList.removeAll { it == (context.getString(R.string.empty)) }
+            var notSolvedOperations = 0
 
-            val operate = {
-                operationList[0] = operatorsFunctions[operators.indexOf(operationList[1])](operationList[0].toFloat(), operationList[2].toFloat()).toString()
-                repeat(2){ operationList.removeAt(1) }
-                Log.i("OPERATE", operationList.toString())
-            }
+            for (i in operationList) if (i in operatorsList) notSolvedOperations++
 
-            while (operationList.size != 1){
-                Log.i("WHILE_LOOP", operationList.toString())
-                if (operationList[0] == context.getString(R.string.parenthesis_start)) calculateParenthesis(operationList, 0)
-                else{
-                    when(operationList[1]){
+            while (notSolvedOperations != 0){
+                var operationIndex = 0
 
-                        in operators ->{
-                            if (operationList.size >= 2){
-                                if (operationList[2] == b.context.getString(R.string.parenthesis_start)){
-                                    calculateParenthesis(operationList, 2)
-                                    operate()
-                                }
-                                else operate()
-                            }
-                            else operate()
+                for ((j, i) in operationList.withIndex())
+                    if (i in operatorsList)
+                        if (operationList[j - 1] != context.getString(R.string.parenthesis_end) && operationList[j + 1] != context.getString(R.string.parenthesis_start)){
+                            operationIndex = j - 1
+                            break
                         }
 
-                        context.getString(R.string.parenthesis_start) -> {
-                            calculateParenthesis(operationList, 1)
-                            operate()
-                        }
+                notSolvedOperations--
 
+                val result = operateScientific(operationList, operationIndex)
+
+                var pCounter = 0
+
+                if (operationIndex - 1 >= 0 && operationIndex + 3 <= operationList.size)
+                    if (operationList[operationIndex - 1] == context.getString(R.string.parenthesis_start) && operationList[operationIndex + 3] == context.getString(R.string.parenthesis_end)){
+                        operationList.removeAt(operationIndex + 3)
+                        operationList.removeAt(operationIndex - 1)
+                        pCounter += 1
                     }
-                }
-            }
 
-            Log.i("GET_RESULT_RESULT", operationList[0])
-            return operationList[0]
+                repeat(3){ operationList.removeAt(operationIndex - pCounter) }
+
+                operationList.add(operationIndex - pCounter, result)
+            }
         }
     }
+
 }

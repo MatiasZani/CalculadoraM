@@ -54,8 +54,16 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
     }
 
     val calculate = {
-        _result.value = c.calculate()
-        show(true)
+        val calculate = {
+            _result.value = c.calculate(parenthesisCounter)
+            show(true)
+        }
+
+        when {
+            c.operation.lastValue.isNotEmpty() -> calculate()
+            c.operation[c.operation.lastIndex - 1] !in b.operators -> calculate()
+            else -> Toast.makeText(b.context, b.context.getString(R.string.format_no_vaild), Toast.LENGTH_SHORT).show()
+        }
     }
 
     val removeCharacter = {
@@ -135,13 +143,13 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
             when(value){
 
                 0 -> {
+                    if (operation.isEmpty()) operation.add(b.context.getString(R.string.empty))
                     if (operation.lastValue == b.context.getString(R.string.empty)) operation.removeLast()
                     addCharacter(b.context.getString(R.string.parenthesis_start), true)
                     parenthesisCounter++
                 }
 
                 1 ->{
-                    Log.i("P", parenthesisCounter.toString())
                     if (parenthesisCounter >= 1){
                         val add = {
                             addCharacter(b.context.getString(R.string.parenthesis_end), true)
