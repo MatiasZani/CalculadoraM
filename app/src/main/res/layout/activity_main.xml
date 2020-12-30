@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/autorenew" />
+                android:src="@drawable/autorenew" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -48,25 +48,25 @@
 
                 <TextView
                     android:id="@+id/txt_screen"
+                    android:gravity="bottom|end"
+                    app:autoSizeTextType="uniform"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/text_color_secondary"
-                    android:textSize="@dimen/textSecondary" />
+                    android:textColor="@color/text_color_secondary" />
 
                 <TextView
                     android:id="@+id/txt_story"
+                    android:gravity="bottom|end"
+                    app:autoSizeTextType="uniform"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/textScreen" />
+                    android:textColor="@color/text_color" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

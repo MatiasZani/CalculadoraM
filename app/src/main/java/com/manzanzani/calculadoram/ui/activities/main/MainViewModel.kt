@@ -13,6 +13,11 @@ import com.manzanzani.calculadoram.repository.utils.Calculator
 import com.manzanzani.calculadoram.repository.utils.Screen
 import com.manzanzani.calculadoram.ui.others.toStringE
 
+infix fun Float.plus(otherNum: Float): Float = this.plus(otherNum)
+infix fun Float.minus(otherNum: Float): Float = this.minus(otherNum)
+infix fun Float.divided(otherNum: Float): Float = this.div(otherNum)
+infix fun Float.multiplied(otherNum: Float): Float = this.times(otherNum)
+infix fun Float.percentage(otherNum: Float): Float = this % otherNum
 
 class MainViewModel: ViewModel() {
 
@@ -20,13 +25,13 @@ class MainViewModel: ViewModel() {
 
     private lateinit var operators: List<String>
 
-    private val operatorsFunctions=
+    private val operatorsFunctions =
             listOf(
-                    { f1: Float, f2: Float -> f1 + f2}, // +
-                    { f1: Float, f2: Float -> f1 - f2}, // -
-                    { f1: Float, f2: Float -> f1 * f2}, // *
-                    { f1: Float, f2: Float -> f1 / f2}, // /
-                    { f1: Float, f2: Float -> f1 % f2} // %
+                    { num1: Float, num2: Float -> num1 plus num2}, // +
+                    { num1: Float, num2: Float -> num1 multiplied  num2}, // *
+                    { num1: Float, num2: Float -> num1 divided  num2}, // /
+                    { num1: Float, num2: Float -> num1 percentage num2}, // %
+                    { num1: Float, num2: Float -> num1 minus num2} // -
             )
 
     private lateinit var calculator: Calculator

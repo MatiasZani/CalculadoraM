@@ -8,6 +8,7 @@
 
     <!-- UTILS -->
     <string name="empty"></string>
+    <string name="space"> </string>
     <string name="coma">,</string>
     <string name="espace"> </string>
 

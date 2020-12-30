@@ -3,10 +3,16 @@
 
     <string-array name="operatos">
         <item>+</item>
-        <item>-</item>
         <item>*</item>
         <item>/</item>
         <item>%</item>
+        <item>-</item>
     </string-array>
+
+    <string-array name="parenthesis">
+        <item>(</item>
+        <item>)</item>
+    </string-array>
+
 
 </resources>

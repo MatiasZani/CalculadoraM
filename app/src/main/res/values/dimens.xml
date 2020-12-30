@@ -8,7 +8,7 @@
     <dimen name="corners_radius">20dp</dimen>
 
     <dimen name="textScreen">24sp</dimen>
-    <dimen name="textSecondary">14sp</dimen>
+    <dimen name="textSecondary">16sp</dimen>
     <dimen name="textIco">24sp</dimen>
 
 </resources>

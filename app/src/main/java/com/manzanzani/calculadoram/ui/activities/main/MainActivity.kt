@@ -53,14 +53,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                         ButtonAndCardView( // Operators
                             listOf(
                                 buttonPlus,
-                                buttonMinus,
                                 buttonTimes,
                                 buttonDiv,
                                 buttonPercent
                             ),
                             listOf(
                                 cardViewPlus,
-                                cardViewMinus,
                                 cardViewTimes,
                                 cardViewDiv,
                                 cardViewPercent
@@ -72,12 +70,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                             listOf(
                                 buttonParenthesisStart,
                                 buttonParenthesisEnd,
-                                buttonDot
+                                buttonDot,
+                                buttonMinus
                             ),
                             listOf(
                                 cardViewParenthesisStart,
                                 cardViewParenthesisEnd,
-                                cardViewDot
+                                cardViewDot,
+                                cardViewMinus
                             )
                         )
 

@@ -10,6 +10,7 @@ import com.manzanzani.calculadoram.repository.classes.BasicDataToExist
 import com.manzanzani.calculadoram.ui.others.lastIndex
 import com.manzanzani.calculadoram.ui.others.lastValue
 import com.manzanzani.calculadoram.ui.others.toStringE
+import com.manzanzani.calculadoram.ui.others.toast
 
 class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
@@ -27,7 +28,7 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
     val addAny = { value: Int, type: Int ->
         with(b){
             if (c.operation.toStringE(context).toCharArray().size < maxScreen) listOf(addNumber, addOperator, addEspecial)[type](value)
-            else Toast.makeText(context, context.getString(R.string.max_lenght) + maxScreen.toString() + context.getString(R.string.digits), Toast.LENGTH_SHORT).show()
+            else context.toast("${context.getString(R.string.max_lenght)} $maxScreen ${context.getString(R.string.digits)}")
             Log.i("OP_EDITED", c.operation.toString())
         }
     }
@@ -62,7 +63,7 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
         when {
             c.operation.lastValue.isNotEmpty() -> calculate()
             c.operation[c.operation.lastIndex - 1] !in b.operators -> calculate()
-            else -> Toast.makeText(b.context, b.context.getString(R.string.format_no_vaild), Toast.LENGTH_SHORT).show()
+            else -> b.context.toast(b.context.getString(R.string.format_no_vaild))
         }
     }
 
@@ -84,36 +85,38 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
                 operation.removeAt(operation.lastIndex)
             }
 
-            if (operation.isNotEmpty()){
+            if (operation.isNotEmpty()){ // CASE [ 12 ] ... [ 1 ]
                 if (operation.lastValue.isEmpty() && operation.size != 1){
                     removeLastString()
-                    if (operation.lastValue.length > 1) removeLastCharacter()
-                    else removeLastString()
+                    if (operation.lastValue.length > 1) removeLastCharacter() // CASE [ 123, +,  ]
+                    else removeLastString() // CASE [ (, 1, +, 1, ),  ] ... [ (, 1, +, 1]
                 }
-                else if (operation.lastValue.isNotEmpty()) removeLastCharacter()
-                else Unit
+                else if (operation.lastValue.isNotEmpty()) removeLastCharacter() // CASE [ 12 ] ... [ 1 ]
             }
-            else operation = arrayListOf(b.context.getString(R.string.empty))
-            show(false)
+            else operation = arrayListOf(b.context.getString(R.string.empty)) // CASE [ 1 ] ... [  ]
+
+            show(false) // SHOW RESULT
+            Log.i("OPERATION_REMOVE", operation.toString())
         }
     }
 
     private val show = { flag: Boolean ->
         with(c){
-            val value = operation.toStringE(b.context)
-            if (flag) _screen.value = value
-            else _story.value = value
+            val value = operation.toStringE(b.context) // GET VALUE
+            if (flag) _screen.value = value // Show in SCREEN
+            else _story.value = value // Show in STORY
         }
     }
 
     private val addCharacter = { value: String, flag: Boolean ->
         with(c){
-            if (!flag) operation[operation.lastIndex] = operation.lastValue + value
-            else{
+            if (flag) { // CASE [ (, 123 ] ... [ (, 123, ),  ]
                 operation.add(value)
                 operation.add(b.context.getString(R.string.empty))
             }
-            show(false)
+            else  // CASE [ 12 ] ... [ 123 ]
+                operation[operation.lastIndex] = operation.lastValue + value
+            show(false) // SHOW RESULT
         }
     }
 
@@ -121,17 +124,20 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     private val addOperator = { value: Int ->
         with(b){
-            if (c.operation.lastValue !in context.resources.getStringArray(R.array.operatos) &&
+            if (c.operation.lastValue !in context.resources.getStringArray(R.array.operatos) && // CASE [ 123, + ] ... [ 123, +, +] NOT POSSIBLE
                     when {
                         c.operation.lastIndex > 2 -> {
-                            if (c.operation[c.operation.lastIndex - 1] == context.getString(R.string.parenthesis_end)){
+                            if (c.operation[c.operation.lastIndex - 1] == context.getString(R.string.parenthesis_end)){ // CASE [ 123, + ] ... [ 123, +, ) ] NOT POSIBLE
                                 c.operation.remove(context.getString(R.string.empty))
                                 true
-                            } else c.operation.lastValue.isNotEmpty()  &&
-                            c.operation[c.operation.lastIndex] !in context.resources.getStringArray(R.array.operatos)
+                            }
+                            else
+                                c.operation.lastValue.isNotEmpty()  &&
+                                c.operation[c.operation.lastIndex] !in context.resources.getStringArray(R.array.operatos)
+                                // CASE [ (, 123, ), ] ... [ (, 123, ), +]
                         }
 
-                        else -> c.operation.lastValue.isNotEmpty()
+                        else -> c.operation.lastValue.isNotEmpty() // CASE [  ] ... [ + ] NOT POSSIBLE
                     })
 
                 if (value in operators.indices) addCharacter(operators[value], true)
@@ -142,34 +148,46 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
         with(c){
             when(value){
 
-                0 -> {
-                    if (operation.isEmpty()) operation.add(b.context.getString(R.string.empty))
-                    if (operation.lastValue == b.context.getString(R.string.empty)) operation.removeLast()
+                0 -> { // (
+                    if (operation.lastValue == b.context.getString(R.string.empty)) operation.removeLast() // CASE [ 123 ] ... [ 123( ] NOT POSSIBLE
                     addCharacter(b.context.getString(R.string.parenthesis_start), true)
                     parenthesisCounter++
                 }
 
-                1 ->{
-                    if (parenthesisCounter >= 1){
+                1 ->{ // )
+                    Log.i("P", parenthesisCounter.toString())
+                    if (parenthesisCounter >= 1){ // CASE [ ] ... [ ( ] NOT POSSIBLE
                         val add = {
                             addCharacter(b.context.getString(R.string.parenthesis_end), true)
                             parenthesisCounter--
                         }
-                        if(operation.lastIndex > 0){
+
+                        if(operation.lastIndex > 0){ // CASE [ (, ] ... [ (, ) ] NOT POSSIBLE
                             if (operation.lastValue.isNotEmpty()) add()
                             else if (operation[operation.lastIndex - 1] == b.context.getString(R.string.parenthesis_end)){
                                 parenthesisCounter--
-                                operation[operation.lastIndex] = b.context.getString(R.string.parenthesis_end)
-                                operation.add(b.context.getString(R.string.empty))
+                                add()
                             }
                         }
                     }
                 }
 
-                else -> addCharacter(b.context.getString(R.string.dot), false)
+                2 -> { // .
+                    if (operation.lastValue.isNotEmpty() && // CASE [(, ] ... [(, .] NOT POSSIBLE
+                        !operation.lastValue.contains(b.context.getString(R.string.dot).toCharArray()[0])) //CASE [(, 1.3] ... [(, 1.3.] NOT POSSIBLE
+                        addCharacter(b.context.getString(R.string.dot), false)
+                }
+
+
+                else -> { // -
+                    if (operation.lastValue.isEmpty()) // CASE [(, ] ... [(, -123]
+                        operation[operation.lastIndex] = b.operators[1]
+                    else  // CASE [(, 123, -, 123]
+                        addOperator(4)
+                }
 
             }
-            show(false)
+            show(false) // SHOW RESULT
         }
     }
 
