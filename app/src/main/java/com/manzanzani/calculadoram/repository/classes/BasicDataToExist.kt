@@ -4,7 +4,8 @@ import android.content.Context
 
 data class BasicDataToExist(
         val operators: List<String>,
-        val operatorsFunctions: List<(Float, Float) -> Float>,
+        val operatorsFunctionsWithTwoNumbers: List<(Float, Float) -> Float>,
+        val operatorsFunctionsWithOneNumber: List<(Float) -> Float>,
         val maxScreen: Int,
         val context: Context
         )

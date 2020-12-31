@@ -2,6 +2,7 @@ package com.manzanzani.calculadoram.repository.utils
 
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,50 +21,17 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
     private val _story = MutableLiveData<String>()
     val story: LiveData<String> get() = _story
 
-    private val _result = MutableLiveData<Float>()
-    val result: LiveData<Float> get() = _result
-
     private var parenthesisCounter = 0
+
+    private var operation = ArrayList<String>().apply { add(b.context.getString(R.string.empty)) }
 
     val addAny = { value: Int, type: Int ->
         with(b){
-            if (c.operation.toStringE(context).toCharArray().size < maxScreen) listOf(addNumber, addOperator, addEspecial)[type](value)
-            else context.toast("${context.getString(R.string.max_lenght)} $maxScreen ${context.getString(R.string.digits)}")
-            Log.i("OP_EDITED", c.operation.toString())
-        }
-    }
-
-    val restart = { btnRestart: View ->
-        with(b){
-
-            val restart = {
-                btnRestart.visibility = View.VISIBLE
-                btnRestart.setOnClickListener {
-                    c.operation = arrayListOf(context.getString(R.string.empty))
-                    _screen.value = context.getString(R.string.empty)
-                    _story.value = context.getString(R.string.empty)
-                }
-            }
-
-            if (screen.value.toString().isEmpty()){
-                if (c.operation.size == 0 && _story.value.toString().isNotEmpty()) c.operation.add(context.getString(R.string.empty))
-                if (c.operation[0].toCharArray().isNotEmpty()) restart()
-                else btnRestart.visibility = View.GONE
-            }
-            else restart()
-        }
-    }
-
-    val calculate = {
-        val calculate = {
-            _result.value = c.calculate(parenthesisCounter)
-            show(true)
-        }
-
-        when {
-            c.operation.lastValue.isNotEmpty() -> calculate()
-            c.operation[c.operation.lastIndex - 1] !in b.operators -> calculate()
-            else -> b.context.toast(b.context.getString(R.string.format_no_vaild))
+            if (operation.toStringE(context).toCharArray().size < maxScreen) // OPERATION SIZE > MAX SCREEN NOT POSIBLE
+                listOf(addNumber, addOperator, addEspecial)[type](value)
+            else    // OPERATION SIZE > MAX SCREEN
+                context.toast("${context.getString(R.string.max_lenght)} $maxScreen ${context.getString(R.string.digits)}")
+            Log.i("OP_EDITED", operation.toString())
         }
     }
 
@@ -75,12 +43,12 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
                 if (string == b.context.getString(R.string.parenthesis_end)) parenthesisCounter++
             }
 
-            val removeLastCharacter = {
+            val removeLastCharacter = { // CASE [ (, 123 ] ... [ (, 12 ]
                 checkParenthesisIndexs(operation.lastValue)
                 operation[operation.lastIndex] = operation.lastValue.substring(0, operation.lastValue.length - 1)
             }
 
-            val removeLastString = {
+            val removeLastString = { // CASE [ (,  ] ... [ ( ]
                 checkParenthesisIndexs(operation.lastValue)
                 operation.removeAt(operation.lastIndex)
             }
@@ -89,7 +57,7 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
                 if (operation.lastValue.isEmpty() && operation.size != 1){
                     removeLastString()
                     if (operation.lastValue.length > 1) removeLastCharacter() // CASE [ 123, +,  ]
-                    else removeLastString() // CASE [ (, 1, +, 1, ),  ] ... [ (, 1, +, 1]
+                    else removeLastString() // CASE [ (, (,  ] ... [ (,  ]
                 }
                 else if (operation.lastValue.isNotEmpty()) removeLastCharacter() // CASE [ 12 ] ... [ 1 ]
             }
@@ -97,6 +65,39 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
             show(false) // SHOW RESULT
             Log.i("OPERATION_REMOVE", operation.toString())
+        }
+    }
+
+    val calculate = {
+        val calculate = {
+            c.calculate(operation, parenthesisCounter)
+            show(true)
+        }
+
+        when {
+            operation.lastValue.isNotEmpty() -> calculate() // CASE [ ] ... [  ] NOT POSSIBLE
+            operation[operation.lastIndex - 1] !in b.operators -> calculate() // CASE [ 123, + ] ... [  ] NOT POSSIBLE
+            else -> b.context.toast(b.context.getString(R.string.format_no_vaild)) // CASE [ 8, + ] ... [ 8, + ]
+        }
+    }
+
+    val configFunction = { btn: TextView ->
+        with(b){
+            if (operation[0].isNotEmpty()) btn.text = context.getString(R.string.ce)
+            else btn.text = context.getString(R.string.c)
+        }
+    }
+
+    val function = {
+        with(b){
+            if (operation[0].isNotEmpty()){
+                operation = arrayListOf(context.getString(R.string.empty))
+                show(false)
+            }
+            else {
+                if (_screen.value == null) _screen.value = context.getString(R.string.empty)
+                else if(screen.value!! != context.getString(R.string.empty)) _screen.value = context.getString(R.string.empty)
+            }
         }
     }
 
@@ -124,20 +125,20 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     private val addOperator = { value: Int ->
         with(b){
-            if (c.operation.lastValue !in context.resources.getStringArray(R.array.operatos) && // CASE [ 123, + ] ... [ 123, +, +] NOT POSSIBLE
+            if (operation.lastValue !in context.resources.getStringArray(R.array.operatos) && // CASE [ 123, + ] ... [ 123, +, +] NOT POSSIBLE
                     when {
-                        c.operation.lastIndex > 2 -> {
-                            if (c.operation[c.operation.lastIndex - 1] == context.getString(R.string.parenthesis_end)){ // CASE [ 123, + ] ... [ 123, +, ) ] NOT POSIBLE
-                                c.operation.remove(context.getString(R.string.empty))
+                        operation.lastIndex > 2 -> {
+                            if (operation[operation.lastIndex - 1] == context.getString(R.string.parenthesis_end)){ // CASE [ 123, + ] ... [ 123, +, ) ] NOT POSIBLE
+                                operation.remove(context.getString(R.string.empty))
                                 true
                             }
                             else
-                                c.operation.lastValue.isNotEmpty()  &&
-                                c.operation[c.operation.lastIndex] !in context.resources.getStringArray(R.array.operatos)
+                                operation.lastValue.isNotEmpty()  &&
+                                operation[operation.lastIndex] !in context.resources.getStringArray(R.array.operatos)
                                 // CASE [ (, 123, ), ] ... [ (, 123, ), +]
                         }
 
-                        else -> c.operation.lastValue.isNotEmpty() // CASE [  ] ... [ + ] NOT POSSIBLE
+                        else -> operation.lastValue.isNotEmpty() // CASE [  ] ... [ + ] NOT POSSIBLE
                     })
 
                 if (value in operators.indices) addCharacter(operators[value], true)
@@ -146,6 +147,7 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 
     private val addEspecial = { value: Int ->
         with(c){
+
             when(value){
 
                 0 -> { // (
@@ -179,11 +181,29 @@ class Screen(private val c: Calculator, private val b: BasicDataToExist) {
                 }
 
 
-                else -> { // -
+                3 -> { // -
                     if (operation.lastValue.isEmpty()) // CASE [(, ] ... [(, -123]
-                        operation[operation.lastIndex] = b.operators[1]
+                        operation[operation.lastIndex] = b.operators[8]
                     else  // CASE [(, 123, -, 123]
-                        addOperator(4)
+                        addOperator(8)
+                }
+
+                4 -> {
+                    if (operation.lastValue.isEmpty()) { // CASE [(, ] ... [(, √123]
+                        operation[operation.lastIndex] = b.operators[6]
+                        operation.add(b.context.getString(R.string.empty))
+                    }
+                    else  // CASE [(, 123, √, 123]
+                        addCharacter(b.operators[6], true)
+                }
+
+                5 -> {
+                    if (operation.lastValue.isEmpty()) { // CASE [(, ] ... [(, L123]
+                        operation[operation.lastIndex] = b.operators[7]
+                        operation.add(b.context.getString(R.string.empty))
+                    }
+                    else  // CASE [(, 123, L, 123]
+                        addCharacter(b.operators[7], true)
                 }
 
             }

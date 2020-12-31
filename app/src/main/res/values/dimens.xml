@@ -11,4 +11,6 @@
     <dimen name="textSecondary">16sp</dimen>
     <dimen name="textIco">24sp</dimen>
 
+    <dimen name="flexibility">5</dimen>
+
 </resources>

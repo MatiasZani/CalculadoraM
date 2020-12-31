@@ -4,8 +4,12 @@
     <string-array name="operatos">
         <item>+</item>
         <item>*</item>
-        <item>/</item>
+        <item>÷</item>
         <item>%</item>
+        <item>^</item>
+        <item>/</item>
+        <item>√</item>
+        <item>L</item>
         <item>-</item>
     </string-array>
 

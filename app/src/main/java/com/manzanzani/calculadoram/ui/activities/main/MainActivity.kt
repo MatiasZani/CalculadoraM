@@ -1,6 +1,7 @@
 package com.manzanzani.calculadoram.ui.activities.main
 
 import android.view.LayoutInflater
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -22,7 +23,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                 v.init(b.root.context)
 
                 v.viewModelScope.launch {
-
                     for ((lambdaIndex, groupdOfView) in listOf(
                         ButtonAndCardView( // Numbers
                             listOf(
@@ -55,13 +55,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                                 buttonPlus,
                                 buttonTimes,
                                 buttonDiv,
-                                buttonPercent
+                                buttonPercent,
+                                buttonPow,
+                                buttonFraction
                             ),
                             listOf(
                                 cardViewPlus,
                                 cardViewTimes,
                                 cardViewDiv,
-                                cardViewPercent
+                                cardViewPercent,
+                                cardViewPow,
+                                cardViewFraction
 
 
                             )
@@ -71,13 +75,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                                 buttonParenthesisStart,
                                 buttonParenthesisEnd,
                                 buttonDot,
-                                buttonMinus
+                                buttonMinus,
+                                buttonRoot,
+                                buttonLog
                             ),
                             listOf(
                                 cardViewParenthesisStart,
                                 cardViewParenthesisEnd,
                                 cardViewDot,
-                                cardViewMinus
+                                cardViewMinus,
+                                cardViewRoot,
+                                cardViewLog
                             )
                         )
 
@@ -90,39 +98,29 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                     }
                 }
 
-                val constantButtons = ButtonAndCardView(
-                        listOf(
+                val constantButtons = ButtonAndCardView(listOf(
                                 buttonEquals,
-                                buttonFuntion
-                        ),
-                        listOf(
+                                buttonFunction
+                        ), listOf(
                                 cardViewEquals,
-                                cardViewFuntion
-                        )
-                )
+                                cardViewFunction
+                        ))
 
-                for (i in 0..1)
-                    for (x in listOf(constantButtons.buttons, constantButtons.cardView))
-                        x[i].setOnClickListener {
-                            listOf(v.screen.calculate, v.screen.removeCharacter)[i]()
-                        }
+                for (i in 0..1) for (x in listOf(constantButtons.buttons, constantButtons.cardView))
+                    x[i].setOnClickListener {
+                        listOf(v.screen.calculate, v.screen.function, v.screen.removeCharacter)[i]()
+                    }
 
-                v.screen.screen.observe(lfo){
-                    txtScreen.text = it
-                    v.screen.restart(b.buttonRestart)
-                }
+                for ((j, i) in listOf(buttonRemove).withIndex())
+                    i.setOnClickListener {
+                        listOf(v.screen.removeCharacter)[j]()
+                    }
 
-                v.screen.story.observe(lfo){
-                    txtStory.text = it
-                    v.screen.restart(b.buttonRestart)
-                }
-
-                v.screen.result.observe(lfo){
-
-                }
+                for((j, i) in listOf(v.screen.screen, v.screen.story).withIndex())
+                    i.observe(lfo){
+                        listOf(txtScreen, txtStory)[j].text = it
+                        v.screen.configFunction(buttonFunction)
+                    }
             }
-
-
         }
-
 )

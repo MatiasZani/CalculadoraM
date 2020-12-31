@@ -9,66 +9,52 @@
     tools:context=".ui.activities.main.MainActivity" >
 
     <io.armcha.elasticview.ElasticView
-        app:flexibility="5"
+        app:flexibility="1"
         android:backgroundTint="@color/card_view_standar"
         app:cardCornerRadius="@dimen/corners_radius"
         android:layout_margin="@dimen/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/card_view_standar"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
 
+            <TextView
+                android:id="@+id/txt_screen"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:gravity="bottom|end"
+                android:textColor="@color/text_color_secondary"
+                app:autoSizeTextType="uniform" />
 
-            <ImageView
-                android:id="@+id/button_restart"
-                android:visibility="gone"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                android:src="@drawable/autorenew" />
+            <TextView
+                android:id="@+id/txt_story"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="bottom|end"
+                android:textColor="@color/text_color"
+                app:autoSizeTextType="uniform" />
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/card_view_standar"
-                android:orientation="vertical"
-                android:padding="@dimen/padding"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txt_screen"
-                    android:gravity="bottom|end"
-                    app:autoSizeTextType="uniform"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="@color/text_color_secondary" />
-
-                <TextView
-                    android:id="@+id/txt_story"
-                    android:gravity="bottom|end"
-                    app:autoSizeTextType="uniform"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/button_remove"
+                    android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="@color/text_color" />
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/backspace" />
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </io.armcha.elasticview.ElasticView>
 
@@ -81,6 +67,111 @@
 
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <io.armcha.elasticview.ElasticView
+                android:id="@+id/card_view_pow"
+                app:flexibility="10"
+                android:backgroundTint="@color/card_view_color"
+                android:layout_margin="@dimen/button_padding"
+                app:cardCornerRadius="@dimen/corners_radius"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/button_pow"
+                    android:text="@string/pow"
+                    android:gravity="center"
+                    android:textSize="@dimen/textIco"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </io.armcha.elasticview.ElasticView>
+
+
+            <io.armcha.elasticview.ElasticView
+                android:id="@+id/card_view_root"
+                app:flexibility="10"
+                android:backgroundTint="@color/card_view_standar"
+                android:layout_margin="@dimen/button_padding"
+                app:cardCornerRadius="@dimen/corners_radius"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/button_root"
+                    android:text="@string/root"
+                    android:gravity="center"
+                    android:textSize="@dimen/textIco"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </io.armcha.elasticview.ElasticView>
+
+
+            <io.armcha.elasticview.ElasticView
+                android:id="@+id/card_view_fraction"
+                app:flexibility="10"
+                android:backgroundTint="@color/card_view_standar"
+                android:layout_margin="@dimen/button_padding"
+                app:cardCornerRadius="@dimen/corners_radius"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/button_fraction"
+                    android:text="@string/fraction"
+                    android:gravity="center"
+                    android:textSize="@dimen/textIco"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </io.armcha.elasticview.ElasticView>
+
+
+            <io.armcha.elasticview.ElasticView
+                android:id="@+id/card_view_log"
+                app:flexibility="10"
+                android:backgroundTint="@color/card_view_standar"
+                android:layout_margin="@dimen/button_padding"
+                app:cardCornerRadius="@dimen/corners_radius"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/button_log"
+                    android:text="@string/log"
+                    android:gravity="center"
+                    android:textSize="@dimen/textIco"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </io.armcha.elasticview.ElasticView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
@@ -88,7 +179,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_parenthesis_start"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -112,7 +203,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_parenthesis_end"
-        app:flexibility="5"
+        app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -136,7 +227,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_percent"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -159,8 +250,8 @@
 
 
             <io.armcha.elasticview.ElasticView
-                android:id="@+id/card_view_funtion"
-                app:flexibility="5"
+                android:id="@+id/card_view_function"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -168,9 +259,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/button_funtion"
-                    android:src="@drawable/backspace"
+                <TextView
+                    android:id="@+id/button_function"
+                    android:text="@string/c"
                     android:gravity="center"
                     android:textSize="@dimen/textIco"
                     android:textAlignment="center"
@@ -193,7 +284,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_seven"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -217,7 +308,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_eight"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -241,7 +332,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_nine"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -265,7 +356,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_div"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -297,7 +388,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_four"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -321,7 +412,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_five"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -345,7 +436,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_six"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -369,7 +460,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_times"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -401,7 +492,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_one"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -425,7 +516,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_two"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -449,7 +540,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_three"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -473,7 +564,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_minus"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -505,7 +596,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_zero"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="#E64A19"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -529,7 +620,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_dot"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_standar"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -553,7 +644,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_equals"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_especial"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"
@@ -577,7 +668,7 @@
 
             <io.armcha.elasticview.ElasticView
                 android:id="@+id/card_view_plus"
-                app:flexibility="5"
+                app:flexibility="10"
                 android:backgroundTint="@color/card_view_color"
                 android:layout_margin="@dimen/button_padding"
                 app:cardCornerRadius="@dimen/corners_radius"

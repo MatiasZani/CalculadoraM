@@ -4,33 +4,40 @@ import android.util.Log
 import com.manzanzani.calculadoram.R
 import com.manzanzani.calculadoram.repository.classes.BasicDataToExist
 
-class Calculator(private val b: BasicDataToExist){
+class Calculator(private val b: BasicDataToExist) {
 
-    var operation = ArrayList<String>().apply { add(b.context.getString(R.string.empty)) }
+    val calculate = { operation: ArrayList<String>, parenthesisNotEnded: Int ->
+        with(b){
+            operation.removeAll { it == context.getString(R.string.empty) }
+            Log.i("REMOVE_EMPTY", operation.toString())
+            repeat(parenthesisNotEnded){ operation.add(b.context.getString(R.string.parenthesis_end)) }
 
-    val calculate = { parenthesisNotEnded: Int ->
-        operation.remove(b.context.getString(R.string.empty))
-        Log.i("REMOVE_EMPTY", operation.toString())
-        repeat(parenthesisNotEnded){ operation.add(b.context.getString(R.string.parenthesis_end)) }
-        Log.i("COMPLETE_PARENTHESIS", operation.toString())
-        completeAllOperators()
-        Log.i("COMPLETE_OPERATORS", operation.toString())
-        removeNotNecesaryParenthesis()
-        Log.i("REMOVE_PARENTHESIS", operation.toString())
-        while (operation.size != 1){
-            operate(operation, listOf(b.operators[1], b.operators[2], b.operators[3]))
-            operate(operation, listOf(b.operators[0], b.operators[4]))
+            Log.i("COMPLETE_PARENTHESIS", operation.toString())
+
+            completeAllOperators(operation)
+
+            Log.i("COMPLETE_OPERATORS", operation.toString())
+
+            removeNotNecesaryParenthesis(operation)
+
+            Log.i("REMOVE_PARENTHESIS", operation.toString())
+
+            while (operation.size != 1){
+                oneValueOperate(operation, listOf(b.operators[6], b.operators[7]))
+                operate(operation, listOf(b.operators[1], b.operators[2], b.operators[3], b.operators[4], b.operators[5]))
+                operate(operation, listOf(b.operators[0], b.operators[8]))
+            }
+            operation[0].toFloat()
         }
-        operation[0].toFloat()
     }
 
     private val operateScientific = { operationList: ArrayList<String>, firstIndex: Int ->
         with(b){
-            operatorsFunctions[operators.indexOf(operationList[firstIndex + 1])](operationList[firstIndex].toFloat(), operationList[firstIndex + 2].toFloat()).toString()
+            operatorsFunctionsWithTwoNumbers[operators.indexOf(operationList[firstIndex + 1])](operationList[firstIndex].toFloat(), operationList[firstIndex + 2].toFloat()).toString()
         }
     }
 
-    private val completeAllOperators = {
+    private val completeAllOperators = { operation: ArrayList<String> ->
         with(b){
             var parenthesis = 0
 
@@ -60,7 +67,7 @@ class Calculator(private val b: BasicDataToExist){
         }
     }
 
-    private val removeNotNecesaryParenthesis = {
+    private val removeNotNecesaryParenthesis = { operation: ArrayList<String> ->
 
         var parenthesis = 0
 
@@ -84,30 +91,51 @@ class Calculator(private val b: BasicDataToExist){
         }
     }
 
-    private fun operate(operationList: ArrayList<String>, operatorsList: List<String>){
+    private fun oneValueOperate(operationList: ArrayList<String>, operatorsList: List<String>){
         with(b){
-
-            operationList.removeAll { it == context.getString(R.string.empty) }
 
             var notSolvedOperations = 0
 
             for ((j, i) in operationList.withIndex())
-                if (i in operatorsList && operation[j + 1] != context.resources.getStringArray(R.array.parenthesis)[0] && operation[j + 1] != context.resources.getStringArray(R.array.parenthesis)[1])
+                if (i in operatorsList && if (j + 1 in 0..operationList.lastIndex) operationList[j + 1] !in context.resources.getStringArray(R.array.parenthesis) else false)
                     notSolvedOperations++
 
-            Log.i("OPERATORS_LIST", operatorsList.toString())
-            Log.i("NOTSOLVED", notSolvedOperations.toString())
+            while (notSolvedOperations != 0){
+
+                var operationIndex = 0
+
+                notSolvedOperations--
+
+                for ((j, i) in operationList.withIndex())
+                    if (i in operatorsList && if (j + 1 in 0..operationList.lastIndex) operationList[j + 1] !in context.resources.getStringArray(R.array.parenthesis) else false)
+                        operationIndex = j
+
+                val result = operatorsFunctionsWithOneNumber[operatorsList.indexOf(operationList[operationIndex])](operationList[operationIndex + 1].toFloat())
+
+                repeat(2){ operationList.removeAt(operationIndex) }
+
+                operationList.add(operationIndex, result.toString())
+            }
+        }
+    }
+
+    private fun operate(operationList: ArrayList<String>, operatorsList: List<String>){
+        with(b){
+
+            var notSolvedOperations = 0
+
+            for ((j, i) in operationList.withIndex())
+                if (i in operatorsList && operationList[j - 1] != context.getString(R.string.parenthesis_end) && operationList[j + 1] != context.getString(R.string.parenthesis_start))
+                    notSolvedOperations++
 
             while (notSolvedOperations != 0){
-                Log.i("OPERATION", operation.toString())
                 var operationIndex = 0
 
                 for ((j, i) in operationList.withIndex())
-                    if (i in operatorsList)
-                        if (operationList[j - 1] != context.getString(R.string.parenthesis_end) && operationList[j + 1] != context.getString(R.string.parenthesis_start)){
-                            operationIndex = j - 1
-                            break
-                        }
+                    if (i in operatorsList && operationList[j - 1] != context.getString(R.string.parenthesis_end) && operationList[j + 1] != context.getString(R.string.parenthesis_start)) {
+                        operationIndex = j - 1
+                        break
+                    }
 
                 notSolvedOperations--
 
@@ -125,7 +153,7 @@ class Calculator(private val b: BasicDataToExist){
                 repeat(3){ operationList.removeAt(operationIndex - pCounter) }
 
                 operationList.add(operationIndex - pCounter, result)
-                Log.i("OPERATION_1", operation.toString())
+                Log.i("OPERATION_1", operationList.toString())
             }
         }
     }
