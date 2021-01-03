@@ -1,8 +1,22 @@
-package com.manzanzani.calculadoram.ui.others
+package com.manzanzani.calculadoram.ui.utils
 
+import android.app.AlertDialog
 import android.content.Context
+import android.preference.PreferenceManager
+import android.view.View
 import android.widget.Toast
 import com.manzanzani.calculadoram.R
+
+/*
+
+    VIEW
+
+ */
+
+val View.alertDialog: () -> AlertDialog
+    get() = {
+        AlertDialog.Builder(this.context).setView(this).show()
+    }
 
 /*
 
@@ -37,6 +51,16 @@ val String.clear: (Context) -> String
     CONTEXT
 
  */
+
+val Context.getPref: (String) -> Unit
+    get() = {
+        PreferenceManager.getDefaultSharedPreferences(this).getString(it, getString(R.string.empty))!!
+    }
+
+val Context.setPref: (String, String) -> Unit
+    get() = { ref: String, value: String ->
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(ref, value).apply()
+    }
 
 val Context.toast: (String) -> Unit
     get() = {

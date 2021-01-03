@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CalculadoraM">
-        <activity android:name=".ui.activities.main.MainActivity">
+        android:theme="@style/Default">
+        <activity android:name=".ui.activities.main.MainActivity"/>
+
+        <activity android:name=".ui.activities.splash.SplashScreenActivity" android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,17 +1,15 @@
 package com.manzanzani.calculadoram.repository.utils
 
 import android.util.Log
-import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.manzanzani.calculadoram.R
 import com.manzanzani.calculadoram.repository.classes.BasicDataToExist
-import com.manzanzani.calculadoram.ui.others.lastIndex
-import com.manzanzani.calculadoram.ui.others.lastValue
-import com.manzanzani.calculadoram.ui.others.toStringE
-import com.manzanzani.calculadoram.ui.others.toast
+import com.manzanzani.calculadoram.ui.utils.lastIndex
+import com.manzanzani.calculadoram.ui.utils.lastValue
+import com.manzanzani.calculadoram.ui.utils.toStringE
+import com.manzanzani.calculadoram.ui.utils.toast
 
 class Screen(private val c: Calculator, private val b: BasicDataToExist) {
 

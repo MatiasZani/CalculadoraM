@@ -1,13 +1,16 @@
 package com.manzanzani.calculadoram.ui.activities.main
 
+import android.app.Activity
 import android.view.LayoutInflater
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.manzanzani.calculadoram.databinding.ActivityMainBinding
+import com.manzanzani.calculadoram.databinding.ChangePaletteBinding
 import com.manzanzani.calculadoram.repository.abstracs.BaseActivity
 import com.manzanzani.calculadoram.repository.classes.ButtonAndCardView
+import com.manzanzani.calculadoram.ui.utils.DarkModeManager
+import com.manzanzani.calculadoram.ui.utils.alertDialog
 import kotlinx.coroutines.launch
 
 
@@ -16,12 +19,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
         { ViewModelProvider(it).get(MainViewModel::class.java) }, //Get ViewModel
         { ActivityMainBinding.inflate(LayoutInflater.from(it)) }, //Inflate a View
         { it.root }, //Get View of Binding
-        { b: ActivityMainBinding, v: MainViewModel, lfo: LifecycleOwner -> // Config View
+        { b: ActivityMainBinding, v: MainViewModel, lfo: LifecycleOwner, a: Activity -> // Config View
 
             with(b) {
 
                 v.init(b.root.context)
 
+                //Config Numbers and Especial buttons
                 v.viewModelScope.launch {
                     for ((lambdaIndex, groupdOfView) in listOf(
                         ButtonAndCardView( // Numbers
@@ -98,6 +102,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                     }
                 }
 
+                //Config Constant buttons
                 val constantButtons = ButtonAndCardView(listOf(
                                 buttonEquals,
                                 buttonFunction
@@ -111,16 +116,32 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
                         listOf(v.screen.calculate, v.screen.function, v.screen.removeCharacter)[i]()
                     }
 
+                //Config remove button
                 for ((j, i) in listOf(buttonRemove).withIndex())
                     i.setOnClickListener {
                         listOf(v.screen.removeCharacter)[j]()
                     }
 
+                //Observe the screen and story values
                 for((j, i) in listOf(v.screen.screen, v.screen.story).withIndex())
                     i.observe(lfo){
                         listOf(txtScreen, txtStory)[j].text = it
                         v.screen.configFunction(buttonFunction)
                     }
+
+                //Config the Pallete button
+                b.palette.setOnClickListener {
+                    val view = ChangePaletteBinding.inflate(LayoutInflater.from(b.root.context))
+                    val builder = view.root.alertDialog()
+
+                    with(view){
+                        for (i in 0..1) for (x in listOf(listOf(light, dark), listOf(buttonLight, buttonDark)))
+                            x[i].setOnClickListener {
+                                DarkModeManager.setStyleAndSave(i != 0, root.context)
+                                builder.dismiss()
+                            }
+                    }
+                }
             }
         }
 )

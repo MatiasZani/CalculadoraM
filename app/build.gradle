@@ -74,4 +74,7 @@ dependencies {
 
     //ElasticView
     implementation 'com.github.armcha:ElasticView:0.2.0'
+    
+    //Preferences
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 }

@@ -5,12 +5,11 @@
     <string name="max_lenght">No es posible introducir más de </string>
     <string name="format_no_vaild">El formato no es válido</string>
     <string name="digits"> digitos </string>
-
-    <!-- UTILS -->
     <string name="empty"></string>
     <string name="space"> </string>
     <string name="coma">,</string>
     <string name="espace"> </string>
+    <string name="dark_mode">dark_mode</string>
 
     <!-- OPERATORS -->
     <string name="plus">+</string>
@@ -44,4 +43,8 @@
     <string name="seven">7</string>
     <string name="eight">8</string>
     <string name="nine">9</string>
+    <string name="pick_a_palette">Selecciona el tema que te guste</string>
+    <string name="light">Claro</string>
+    <string name="dark">Oscuro</string>
+    <string name="calculator_view">Calculadora</string>
 </resources>

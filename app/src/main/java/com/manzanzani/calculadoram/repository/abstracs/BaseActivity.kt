@@ -14,7 +14,7 @@ abstract class BaseActivity<T, V>(
     private val viewModelProvider: (ViewModelStoreOwner) -> V,
     private val bindingFragment: (Context) -> T,
     private val bindingFragmentRoot: (T) -> View,
-    private val configView: (T, V, LifecycleOwner) -> Unit
+    private val configView: (T, V, LifecycleOwner, Activity) -> Unit
 
 ) : AppCompatActivity() {
 
@@ -25,7 +25,7 @@ abstract class BaseActivity<T, V>(
         super.onCreate(savedInstanceState)
         binding = bindingFragment(this)
         viewModel = viewModelProvider(this)
-        configView(binding!!, viewModel!!, this)
+        configView(binding!!, viewModel!!, this, this)
         setContentView(bindingFragmentRoot(binding!!))
     }
 
